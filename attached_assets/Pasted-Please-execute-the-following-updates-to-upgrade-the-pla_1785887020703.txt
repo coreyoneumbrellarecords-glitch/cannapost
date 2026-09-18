@@ -1,0 +1,26 @@
+Please execute the following updates to upgrade the platform's UX, conversion rate, and feature depth:
+
+1. Navigation and Header Updates:
+   - On the main dashboard layout (/dashboard and all sub-routes), add a clear "Home" navigation button in the top header bar that routes back to the main landing page (/landing).
+   - Enhance the user profile component at the bottom left of the sidebar (showing the avatar and "Aura Cannabis Co."). Make it interactive so clicking it opens a popover/dropdown menu with two options: "Go to Home" and "Log Out".
+   - Clicking "Log Out" must clear the session state and redirect the user back to /sign-in.
+
+2. Frictionless Onboarding Widget (Dashboard):
+   - Add a collapsible "Quickstart Setup Checklist" card at the top of the /dashboard view for new users.
+   - Include 3 completion steps with visual progress indicators (0%, 33%, 67%, 100%):
+     1) "Configure Brand Kit" (links to /settings)
+     2) "Connect Instagram Account" (links to /instagram)
+     3) "Generate First AGCO-Compliant Post" (scrolls to or focuses generator input)
+   - Allow users to dismiss or collapse this widget once finished.
+
+3. Expansion beyond Instagram (Multi-Channel Content Generation):
+   - In the Post Generator component on /dashboard, add a segment selector tab for Content Type: [ Instagram Post | SMS Promo | Email Blast ].
+   - When "SMS Promo" is selected, adjust prompt processing to generate punchy, AGCO-compliant text messages under 160 characters optimized for dispensary loyalty lists.
+   - When "Email Blast" is selected, generate a compliant email subject line, preview snippet, and promotional body copy.
+
+4. High-Converting Landing Page Upgrades (/landing):
+   - Add an interactive "Instant Demo" section in the hero area where prospective dispensary owners can select a sample strain (e.g., "Blue Dream") and instantly see an AGCO-compliant caption and preview graphic appear without logging in.
+   - Add an "ROI & Time Saved Calculator" widget on the landing page allowing dispensary managers to slide their monthly post frequency (e.g., 5 to 30 posts/month) and see estimated hours saved per month.
+
+5. Localized Geotargeting & Hashtag Optimization:
+   - Update the caption generator logic in the backend/AI controller to read the location field from the user's Brand Kit (e.g., "Ontario, Canada" or "Toronto") and automatically append high-performing local SEO hashtags and compliant geotargeting tags to all generated copy.

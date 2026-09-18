@@ -1,0 +1,17 @@
+Replace the current image generation system entirely with OpenRouter's dedicated Image API using the OPENROUTER_API_KEY secret. Use the base URL https://openrouter.ai/api/v1/images and start with the model openai/gpt-image-2 as the default. Remove all Stability AI calls and SVG overlay compositing entirely. GPT Image 2 via OpenRouter renders text, layouts, and artistic elements natively inside the image so no SVG overlay is needed. The full image including store name, strain name, THC percentage, sizes, and disclaimer should all be generated directly as part of the artwork itself.
+
+Store the model name as a configurable variable called IMAGE_MODEL so it can be easily switched to google/gemini-flash-image or bytedance/seedream-4.5 in the future without rewriting any code.
+
+The image style for every cannabis product post must match this description: high end luxury graphic design piece with dimensional 3D typography as the hero, thematic illustrated elements specific to the strain name and flavor profile, rich abstract flowing elements such as silk ribbons, chrome streams, aurora waves, and crystal formations, pure black or very dark background, no photorealistic cannabis buds or plant imagery, style similar to premium cannabis brand packaging design meets luxury editorial art. Every strain gets its own unique visual world based on its name and flavor profile.
+
+ISSUE 2 - LOGO FROM BRAND KIT
+The brand logo uploaded in the brand kit settings must automatically appear on every generated post. Pass the stored brand logo as a reference image to the OpenRouter image API call and instruct it to place the logo cleanly in the upper left or upper center of the image. If no logo is uploaded use the store name text only at the top.
+
+ISSUE 3 - GENERIC STORE POSTS
+Add logic to detect when a post is a general store awareness post rather than a specific product post. A general post is one that does not mention a specific strain, product, THC percentage, or product category. Examples include come visit us, we are now open, meet our team, store hours, or welcome to our store type prompts.
+
+For general store awareness posts generate a clean branded lifestyle image with no cannabis imagery, no THC percentage, no product warnings, and no Health Canada disclaimer. The image should show elegant store branding with the store name and logo prominently displayed on a sophisticated dark background with abstract luxury design elements matching the brand colors. The caption should also contain no product specific language or warnings.
+
+For all actual product posts keep the THC percentage, available sizes, Health Canada warning, and AGCO compliance exactly as they are now.
+
+Test after implementation with three prompts: a Blue Dream flower post, a Pink Goo post, and a generic come visit us this weekend post to confirm all three generate correctly."

@@ -1,0 +1,54 @@
+1. Blackleaf API integration (compliant SMS/Email sending)
+
+Goal: Right now the app can generate SMS/Email copy but has no compliant way to actually send it. Add Blackleaf as the delivery provider so SMS Promo and Email Blast can go from "generated" to "sent" without carrier bans.
+
+Tasks:
+
+Add BLACKLEAF_API_KEY (and any other required Blackleaf credentials) to Replit Secrets. Do not hardcode.
+Create a backend service module, e.g. server/services/blackleaf.ts, that wraps Blackleaf's REST API: send SMS, send email, and check delivery status.
+On the SMS Promo and Email Blast flows, add a "Send" action (separate from "Generate") that calls this service once the user approves the generated copy.
+Make sure outbound links in SMS/email get wrapped with Blackleaf's age-verification checkpoint automatically, don't add this manually per message.
+Add a webhook endpoint (e.g. POST /api/webhooks/blackleaf) to receive delivery/status callbacks and store them against the post record.
+Confirm on Blackleaf's side that the 10DLC Campaign Registry registration is complete before flipping this on for real sends. That's an account setup step, not code, but sending will fail or get flagged without it.
+
+Verify: Generate an SMS promo, hit Send, confirm a real message arrives with a wrapped age-gated link, and confirm the webhook updates the post's status in the dashboard.
+
+2. Don't show potency numbers on non-product posts
+
+Goal: The content generator should only include THC/CBD percentages, potency stats, or product-specific numeric claims when the post is actually about a cannabis product (strain drop, restock, concentrate, etc). General or brand posts (store hours, holiday message, event announcement, non-cannabis merch) should never include these.
+
+Tasks:
+
+Add a post category/type flag to the generation request, e.g. postType: "product" | "general".
+When postType !== "product", strip potency-related fields from the prompt template sent to the Claude API entirely, don't just tell the model to avoid them.
+Add a post-processing safeguard: run a regex check for patterns like \d+%\s?(THC|CBD) on the generated output and strip/flag any that slip through on non-product posts.
+Default new prompts to "general" unless a strain/product name or category is detected, so this fails safe.
+
+One thing to confirm with Corey: the message also said "or igbbmn" as a second thing to exclude alongside potency percentages, but that word didn't come through clearly. Worth pinning down before the agent builds this so it excludes the right second field too.
+
+Verify: Generate a non-product post (e.g. "store hours this weekend") and confirm no percentage/potency language appears. Generate a product post and confirm it still does.
+
+3. Image generation: use the real product photo, cannabis imagery stays background/stylized only
+
+Goal: Generated graphics should be built from the actual uploaded product photo (the one sent over, e.g. via WhatsApp) as the base image, not a stock cannabis render. If cannabis leaf/plant imagery shows up at all, it should read as a subtle background texture or graphic motif, not a literal photorealistic plant front and center.
+
+Tasks:
+
+In the Sharp compositing pipeline, make the user-uploaded source photo the required base layer. Remove any fallback that defaults to a stock cannabis bud/leaf image when no photo is present, prompt for a photo instead.
+If a cannabis leaf/plant graphic element is used for brand texture, keep it low-opacity, cropped, or silhouetted in the background layer, not layered as a focal object on top of the product shot.
+Update whatever prompt or template config controls "decorative elements" so "literal cannabis plant as hero image" is explicitly excluded from the output options.
+
+Verify: Upload a product photo, generate a post, confirm the photo is the visual focus and any cannabis-plant graphic (if present) is subtle, not literal or centered.
+
+4. Logo not appearing / not centered
+
+Goal: The Brand Kit logo should be composited onto every generated post automatically, centered per the layout template, every time. Right now it's being skipped.
+
+Tasks:
+
+Audit the compositing step for a missing await/null check, likely the logo asset isn't finished loading before the composite step runs (race condition), or the logo layer is being treated as optional and silently skipped on error instead of throwing/logging.
+Make the logo layer required in the Sharp pipeline, if it fails to load, the whole generation should fail loudly (so it shows up as a visible error, not a silently missing logo).
+Fix centering math: x = (canvasWidth - logoWidth) / 2, and whichever vertical convention the template uses (true center or bottom-anchored center, confirm which one the design calls for).
+Test across every output size/aspect ratio the app generates (IG square post, IG story, etc), since centering math that works for one ratio can break on another.
+
+Verify: Generate posts across all supported formats and confirm the logo appears, centered, every time, with no silent failures.

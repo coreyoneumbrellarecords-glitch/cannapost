@@ -1,0 +1,125 @@
+"You are rebuilding the CannaPost image generation system from the ground up to produce elite level cannabis marketing content. This is a complete creative and technical overhaul. Do not break any existing authentication, database, AGCO compliance text generation, or caption systems. Only upgrade the image generation pipeline, brand kit engine, content format system, and compliance validation layer.
+
+PART 1 - DYNAMIC BRAND KIT ENGINE
+
+Create a structured brand kit system where each client account stores a complete visual identity profile in Supabase with the following schema:
+
+brandKit: {
+primaryColor: hex string,
+secondaryColor: hex string,
+accentColor: hex string,
+backgroundColor: hex string,
+fontStyle: one of LUXURY, STREETWEAR, HERITAGE, MODERN, MINIMAL,
+layoutGrid: one of CENTERED, EDITORIAL, ASYMMETRIC, BOLD,
+visualMotif: one of SMOKE, GEOMETRIC, ORGANIC, CHROME, CRYSTALLINE,
+toneOfVoice: one of PREMIUM, BOLD, EDUCATIONAL, FRIENDLY, SOPHISTICATED,
+logoUrl: string,
+storeName: string
+}
+
+The fontStyle determines the entire typographic personality of every image:
+LUXURY uses elegant thin serif fonts with generous spacing and gold accents
+STREETWEAR uses heavy compressed display fonts with energy and attitude
+HERITAGE uses classic serif fonts with warm earthy tones suggesting craft and tradition
+MODERN uses clean geometric sans-serif with precise grid layouts
+MINIMAL uses ultra light weight fonts with maximum white space and restraint
+
+The visualMotif determines the abstract artistic elements used in every background:
+SMOKE uses flowing organic smoke wisps and atmospheric depth
+GEOMETRIC uses sharp crystalline shards and angular abstract shapes
+ORGANIC uses flowing botanical and natural flowing curves
+CHROME uses liquid metal ribbons and reflective chrome elements
+CRYSTALLINE uses ice formations and prismatic light refractions
+
+When generating any image pull the full brand kit from Supabase for that authenticated user and pass every value into the image generation prompt. Two different clients generating a Blue Dream post must produce images that look completely different because their brand kits are different.
+
+PART 2 - FIVE CONTENT FORMATS
+
+Build a content format detection system that identifies which of these five formats the user is requesting and applies the correct layout template and visual approach for each:
+
+FORMAT 1 - STRAIN SPOTLIGHT
+Triggered when a user mentions a specific strain name.
+Layout: Full bleed immersive background themed to the strain, large dimensional 3D strain name typography as hero, strain type badge, THC range, available sizes, store name and logo at top, Health Canada warning at bottom.
+Visual approach: The entire image tells the story of that strain through color, texture, and thematic elements specific to its name and flavor profile. No two strains ever look the same.
+
+FORMAT 2 - PRODUCT CATEGORY FEATURE
+Triggered when a user mentions a product type without a specific strain such as concentrates, edibles, vapes, accessories.
+Layout: Product category name as large bold centrepiece, product type specific thematic background, product specifications, store branding.
+Visual approach: Each product category has its own distinct visual language. Concentrates get amber jewel tones and resin textures. Edibles get playful candy and flavor inspired art. Vapes get sleek tech and chrome. Accessories get clean studio product photography aesthetic.
+
+FORMAT 3 - STORE ANNOUNCEMENT
+Triggered when a user mentions events, grand openings, vendor pop ups, store hours, new arrivals, or any non-product business update.
+Layout: Event or announcement name as hero text, date and details clearly displayed, store branding prominent, clean elegant background.
+Visual approach: No THC percentages, no product warnings, no Health Canada disclaimer. Clean luxury brand aesthetic. The store name and announcement are the entire focus.
+
+FORMAT 4 - EDUCATIONAL CONTENT
+Triggered when a user mentions terpenes, genetics, lineage, cannabinoids, how to choose a strain, or any informational topic.
+Layout: Clean editorial layout with the educational topic as the heading, key information points displayed cleanly, store branding as authority marker.
+Visual approach: Sophisticated and informative. Feels like premium editorial content not an advertisement. No product specific compliance requirements apply.
+
+FORMAT 5 - BRAND AWARENESS
+Triggered when a user asks for a general post about the store, team, values, or brand story.
+Layout: Store name and logo as primary focus, brand tagline or welcome message, abstract brand color background.
+Visual approach: Purely brand building. No products, no compliance requirements. Clean premium brand identity expression.
+
+PART 3 - IMAGE GENERATION PIPELINE
+
+For every image generation call build the prompt in three layers:
+
+Layer 1 - Brand Identity Layer
+Always prepend this to every prompt based on the brand kit:
+The visual style for this image is defined by these brand parameters. Primary color is [primaryColor], use this as the dominant accent throughout. Font personality is [fontStyle] which means [describe the specific typography approach]. Visual motif is [visualMotif] which means [describe the specific background elements]. Tone is [toneOfVoice]. The store name [storeName] must appear at the top in a style consistent with the brand personality.
+
+Layer 2 - Content Format Layer
+Apply the specific layout and visual approach for the detected content format as described above.
+
+Layer 3 - Strain Theme Layer
+For strain posts only add the specific thematic elements for that exact strain based on its name and flavor profile. Build a strain theme library covering at minimum these categories:
+
+Candy and dessert strains: glossy bubble letters, dripping candy textures, pastel jewel tones, gold glitter
+Fruit strains: hyper realistic fruit elements integrated into silk and chrome art, jewel toned palettes matching the fruit
+Gas and fuel strains: industrial chrome and steel elements, electric neon explosions, acid yellow tones, lightning
+Purple and indica strains: deep violet crystal formations, aurora wave effects, midnight silk ribbons
+Tropical strains: vibrant color explosions, chrome tropical elements, sunset gradients
+Mint and cool strains: crystalline ice formations, cool aqua and silver tones, arctic aesthetics
+OG and earthy strains: deep amber and terracotta, ancient stone textures, warm gold and rust
+
+PART 4 - COMPLIANCE VALIDATION LAYER
+
+Before generating any caption or image run the user prompt through an automated compliance check using these rules:
+
+AUTOMATICALLY BLOCK AND REWRITE if the prompt contains:
+Any health or medical claim such as helps with, relieves, treats, good for anxiety, good for sleep, or similar
+Any lifestyle association such as be more creative, feel better, enhance your experience, or similar
+Any price inducement such as percentage off, buy one get one, free with purchase, or similar
+Any youth appeal language or imagery references
+Any claims about potency being superior or superior to other products
+Any consumption imagery requests
+
+If a violation is detected silently rewrite the prompt to be compliant and add the small italic note at the bottom of the generated caption saying Content optimized for AGCO compliance.
+
+HEALTH CANADA WARNING REQUIREMENTS:
+Every product post must include one of the rotating Health Canada warning messages
+The warning must appear in a yellow or high contrast banner at the bottom of the image
+The warning text must be clearly legible at minimum 20% of the total image area
+General announcements, educational content, and brand awareness posts do not require the warning
+
+PART 5 - IMAGE DIMENSIONS
+
+Generate all images at 1080x1080 pixels square for feed posts by default.
+
+Add a format toggle to the dashboard allowing users to select between:
+Feed Post at 1080x1080
+Story at 1080x1920
+
+When Story format is selected adapt the layout so the store name and logo are at the top, the main visual content fills the center, and all compliance text is clearly visible at the bottom with appropriate sizing for the taller format.
+
+PART 6 - CONSISTENCY AND DIFFERENTIATION
+
+Store a visual fingerprint for each brand account in Supabase. The fingerprint is derived from their brand kit values and determines a consistent visual signature across all their posts. A client with a luxury gold brand kit will always get elegant gold toned imagery. A client with a streetwear bold brand kit will always get high energy bold imagery. Two different clients can post the same strain and their images must look like they came from two completely different brands.
+
+Test after implementation with these scenarios:
+Two different brand accounts generating a Blue Dream post to confirm they look visually distinct
+A grand opening post to confirm no THC or warnings appear
+A strain spotlight post to confirm all compliance elements are present
+A Story format generation to confirm the 1080x1920 layout works correctly"

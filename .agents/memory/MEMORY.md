@@ -1,0 +1,4 @@
+- [Image generation redesign](image-gen-redesign.md) — OpenRouter renders complete luxury artwork natively; Stability and SVG compositing are removed
+- [Clerk auth web fix](clerk-auth-web-fix.md) — web apps must NOT call setAuthTokenGetter; Expo-only; caused production 401s
+- [Credential migration races](credential-migration-races.md) — lazy plaintext-to-ciphertext upgrades must use compare-and-swap to preserve concurrent credential updates
+- [Orval barrel duplication](orval-barrel-duplication.md) — codegen can append duplicate exports to existing package barrels; normalize them after regeneration

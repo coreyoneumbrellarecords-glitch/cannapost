@@ -1,0 +1,20 @@
+Please implement a strict regulatory guardrail system within the AI prompt generation logic to comply with Health Canada and AGCO advertising standards. Update the system prompt for the AI to immediately reject or filter out any user inputs or generated outputs that violate these constraints. 
+
+Crucially, if a request is blocked, the AI must not fail silently. It must return a clear, user-friendly error message explaining exactly which regulation was triggered so the user understands the compliance issue.
+
+Implement the following filtering rules and their corresponding feedback messages:
+
+1. Lifestyle Promotions: Block any language or imagery that evokes a positive or negative emotion about a way of life, including glamour, recreation, excitement, vitality, risk, or daring.
+* Rejection Message: "Compliance Block: Health Canada regulations prohibit cannabis advertising from evoking a specific lifestyle, including glamour, recreation, excitement, vitality, risk, or daring."
+
+2. Testimonials and Endorsements: Reject all attempts to use customer quotes, reviews, or personal endorsements.
+* Rejection Message: "Compliance Block: The federal Cannabis Act strictly prohibits the use of personal testimonials or endorsements in cannabis marketing."
+
+3. Inducements and Freebies: Filter out any offers of free cannabis products, free accessories, or unauthorized giveaways used as an inducement for purchase.
+* Rejection Message: "Compliance Block: AGCO regulations mandate that dispensaries may not provide cannabis, accessories, or other benefits free of charge as an inducement for purchase."
+
+4. Medical Claims: Block any association with medicine, health, pharmaceuticals, or therapeutic claims.
+* Rejection Message: "Compliance Block: AGCO and Health Canada regulations strictly prohibit advertising that is associated with medicine, health, pharmaceuticals, or therapeutic benefits."
+
+5. Youth Appeal: Strictly reject any requests for cartoons, mascots, fictional characters, or animals, and ensure all copy is explicitly targeted to an adult audience (19+).
+* Rejection Message: "Compliance Block: To prevent youth appeal, Health Canada prohibits the use of cartoons, mascots, fictional characters, or animals in cannabis promotions."

@@ -1,0 +1,37 @@
+It makes total sense. Right now every post looks like it came from the same template regardless of who's logged in. The fix is making the brand kit actually drive the visual style of every image. Here's the prompt:
+
+---
+
+"Update the image generation system so that every brand's posts look completely unique and visually distinct from every other brand on the platform. The brand kit settings must directly influence and control the visual style of every generated image. No two brands should ever produce posts that look similar.
+
+**BRAND DRIVEN VISUAL IDENTITY**
+When generating an image pull the following from the logged in brand's kit and apply them to every generation:
+
+Brand primary color becomes the dominant accent color throughout the image including smoke effects, glow halos, text accents, and abstract elements. If a brand's primary color is red every image has red toned smoke and glow. If it is green the smoke and glow are green. If it is purple everything shifts purple.
+
+Brand voice drives the overall aesthetic mood. Professional brands get clean minimal dark backgrounds with subtle elegant effects. Luxury brands get gold and black high end editorial styling. Bold brands get high contrast explosive energy with dramatic lighting. Friendly brands get warmer softer tones with approachable styling.
+
+Brand name and logo placement must be consistent and prominent on every image in a style that matches the brand. A luxury brand gets an elegant serif font store name. A bold brand gets a heavy weighted all caps store name. A friendly brand gets a rounded modern font store name.
+
+**STYLE VARIATION SYSTEM**
+Build a visual style engine that assigns each brand a unique image style based on their brand kit configuration. The style must remain consistent across all of that brand's posts but be completely different from other brands. Examples:
+
+A brand with red primary color and bold voice gets: dark dramatic backgrounds, red and orange fire and smoke effects, high contrast lighting, heavy impact typography
+
+A brand with green primary color and professional voice gets: deep forest and emerald toned backgrounds, clean minimal smoke effects, sharp professional typography, subtle gold accents
+
+A brand with purple primary color and luxury voice gets: deep violet and black backgrounds, ethereal purple smoke and aurora effects, gold metallic accents, elegant serif typography
+
+A brand with blue primary color and friendly voice gets: midnight blue ocean and sky backgrounds, soft flowing blue smoke, approachable rounded typography, silver accents
+
+**STRAIN AND PRODUCT SPECIFIC VARIATION**
+On top of the brand style layer each strain and product still gets its own unique thematic background as before. The brand style is the consistent visual identity and the strain theme is layered on top. So two different brands posting Blue Dream will both have Blue Dream themed imagery but the colors, effects, and overall mood will look completely different because their brand kits are different.
+
+**IMPLEMENTATION**
+When the generate endpoint is called fetch the authenticated user's brand profile from Supabase including their primary color, brand voice, and store name. Pass all of this data into the image generation prompt alongside the product prompt. The image generation prompt must explicitly include the brand color as the accent color, the brand voice as the mood and style direction, and the store name in the appropriate font weight and style.
+
+Build a brandStyleToImagePrompt function that takes brand kit values and returns a detailed style string to prepend to every image generation prompt. This style string overrides the default styling and ensures visual uniqueness per brand.
+
+Store the brand style fingerprint in the brand_profiles table so it is consistent across all sessions and does not change randomly between generations.
+
+Do not change the AGCO compliance system, caption generation, hashtag system, or any other existing functionality. Only update how brand kit data is passed into and applied to image generation."

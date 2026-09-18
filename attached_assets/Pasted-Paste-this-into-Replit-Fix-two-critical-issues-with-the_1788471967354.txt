@@ -1,0 +1,41 @@
+Paste this into Replit:
+
+---
+
+"Fix two critical issues with the image generation system. Do not change anything else.
+
+**ISSUE 1 - GENERIC POSTS SHOWING THC AND WARNINGS**
+
+Add a smart detection system that identifies whether a post is a general business post or a product specific post. Apply these rules strictly:
+
+GENERAL BUSINESS POSTS include any prompt about grand openings, store hours, visiting the store, team introductions, store announcements, events, vendor pop ups, holiday hours, or anything that does not mention a specific strain, product, or product category.
+
+For general business posts the generated image must NOT include THC percentage, available sizes, Health Canada warning banner, or the 19+ product disclaimer. The image should only show the store name, logo, and a clean branded graphic relevant to the announcement.
+
+The generated caption for general posts must also contain no THC references, no product warnings, and no Health Canada language.
+
+PRODUCT POSTS include any prompt mentioning a specific strain name, flower, pre-rolls, edibles, vapes, concentrates, hash, shatter, CBD, or any cannabis product category.
+
+For product posts keep all existing compliance elements exactly as they are including THC percentage, available sizes, Health Canada warning, and 19+ disclaimer.
+
+**ISSUE 2 - IMAGE STYLE OVERHAUL FOR PRODUCT POSTS**
+
+The current image generation style is wrong. Stop generating images with photorealistic cannabis buds or plant imagery as the main visual element. The new style must match these reference images exactly:
+
+Look at these five reference images as your quality and style benchmark. Pink Gas has large bold chrome metallic strain name typography as the centerpiece with pink cloud formations and industrial chrome pipe elements. Black Mountain Side has dramatic mountain scenery with purple lightning energy and the strain name in clean bold white text. Perma Fried has a bright teal tropical background with glossy abstract shapes and large bold strain name. Pink Goo has 3D glossy candy bubble letters as the hero with pink and gold dripping textures. These are the target aesthetic.
+
+The new image generation prompt structure for every product post must follow this style:
+
+Create a premium cannabis brand promotional graphic in a high end graphic design style. The strain or product name must be the centerpiece of the image rendered in large bold dimensional typography that commands attention. The typography style and material should match the strain personality. Candy strains get glossy bubble letters. Gas strains get chrome metallic industrial letters. Purple strains get deep jewel toned bold text. Tropical strains get bright vibrant bold text.
+
+The background must be a rich abstract artistic scene that is thematically specific to the strain name and flavor profile. Use abstract flowing elements, atmospheric effects, and thematic objects that tell the story of that strain. Pink Gas gets pink cloud formations with industrial chrome pipes and metallic swirls. Gelato gets creamy pastel candy swirls and dessert textures. Sour Diesel gets electric yellow acid industrial elements. Blue Dream gets midnight blue aurora waves and cosmic silk ribbons. Every strain gets its own completely unique visual world.
+
+Do not generate photorealistic cannabis buds, plant leaves, or flower imagery as the primary visual element. The strain is communicated through its name typography and thematic artistic elements only.
+
+The store name and logo must appear cleanly at the top of every image. THC percentage, sizes, and disclaimer must appear in clean readable text in the lower portion on a dark gradient area.
+
+The overall aesthetic must look like it was created by a professional cannabis brand graphic designer, not a generic AI image generator. Reference the quality level of premium cannabis brand packaging design and luxury streetwear editorial art.
+
+Build a strain theme engine that automatically determines the visual style, color palette, typography material, and thematic elements based on the strain name. The engine must cover every major cannabis strain category including candy and dessert strains, fruit strains, gas and fuel strains, purple and indica strains, earthy and OG strains, tropical strains, mint and cool strains, and all product types including concentrates, vapes, edibles, CBD, and accessories.
+
+Test after implementation with these five prompts and confirm each produces a unique style: Grand Opening post for Chamba Cannabis, Pink Goo strain post, Pink Gas strain post, Blue Dream strain post, and a come visit us this weekend post."

@@ -1,0 +1,777 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Aura by CannaPost API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: brand
+    description: Brand profile operations
+  - name: posts
+    description: Cannabis post operations
+  - name: schedules
+    description: Posting schedule operations
+  - name: analytics
+    description: Analytics operations
+  - name: instagram
+    description: Instagram integration
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current authenticated user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /brand:
+    get:
+      operationId: getBrandProfile
+      tags: [brand]
+      summary: Get the current user's brand profile
+      responses:
+        "200":
+          description: Brand profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandProfile"
+        "404":
+          description: Brand profile not found
+    post:
+      operationId: createBrandProfile
+      tags: [brand]
+      summary: Create brand profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandProfileInput"
+      responses:
+        "201":
+          description: Created brand profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandProfile"
+    patch:
+      operationId: updateBrandProfile
+      tags: [brand]
+      summary: Update brand profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandProfileUpdate"
+      responses:
+        "200":
+          description: Updated brand profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandProfile"
+
+  /posts:
+    get:
+      operationId: listPosts
+      tags: [posts]
+      summary: List all posts for the current user
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: post_type
+          in: query
+          schema:
+            type: string
+            enum: [post, story, sms, email]
+      responses:
+        "200":
+          description: Paginated list of posts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostList"
+    post:
+      operationId: generatePost
+      tags: [posts]
+      summary: Generate a new AI post (caption + image)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeneratePostInput"
+      responses:
+        "201":
+          description: Generated post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: Invalid input or missing brand profile
+        "422":
+          description: Prompt blocked by compliance guardrails
+
+  /posts/{id}:
+    get:
+      operationId: getPost
+      tags: [posts]
+      summary: Get a single post
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "200":
+          description: Post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Not found
+    delete:
+      operationId: deletePost
+      tags: [posts]
+      summary: Delete a post
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /posts/{id}/publish:
+    post:
+      operationId: publishPost
+      tags: [posts]
+      summary: Publish a post to Instagram
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "200":
+          description: Published post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Post not found
+
+  /posts/{id}/schedule:
+    post:
+      operationId: schedulePost
+      tags: [posts]
+      summary: Schedule a post for later
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SchedulePostInput"
+      responses:
+        "200":
+          description: Scheduled post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Post not found
+
+  /prompts/suggested:
+    get:
+      operationId: getSuggestedPrompts
+      tags: [posts]
+      summary: Get industry-specific suggested prompts for the current brand
+      responses:
+        "200":
+          description: Suggested prompts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuggestedPrompts"
+
+  /schedules:
+    get:
+      operationId: getSchedule
+      tags: [schedules]
+      summary: Get the posting schedule for the current user
+      responses:
+        "200":
+          description: Posting schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Schedule"
+        "404":
+          description: Schedule not found
+    post:
+      operationId: createSchedule
+      tags: [schedules]
+      summary: Create posting schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduleInput"
+      responses:
+        "201":
+          description: Created posting schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Schedule"
+    patch:
+      operationId: updateSchedule
+      tags: [schedules]
+      summary: Update posting schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduleUpdate"
+      responses:
+        "200":
+          description: Updated posting schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Schedule"
+
+  /analytics/summary:
+    get:
+      operationId: getAnalyticsSummary
+      tags: [analytics]
+      summary: Dashboard analytics summary (total posts, estimated reach, etc.)
+      responses:
+        "200":
+          description: Analytics summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsSummary"
+
+  /analytics/calendar:
+    get:
+      operationId: getContentCalendar
+      tags: [analytics]
+      summary: Content calendar — upcoming scheduled posts
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Content calendar
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalendarEntries"
+
+  /instagram/connect:
+    post:
+      operationId: connectInstagram
+      tags: [instagram]
+      summary: Save Instagram access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstagramConnectInput"
+      responses:
+        "200":
+          description: Instagram connection status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstagramStatus"
+
+  /instagram/status:
+    get:
+      operationId: getInstagramStatus
+      tags: [instagram]
+      summary: Get Instagram connection status
+      responses:
+        "200":
+          description: Instagram connection status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstagramStatus"
+
+components:
+  parameters:
+    PostId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    User:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        trialEndsAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    BrandProfile:
+      type: object
+      required: [id, userId, businessName, industry]
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        businessName:
+          type: string
+        industry:
+          type: string
+        instagramHandle:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        timezone:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        logoBase64:
+          type: ["string", "null"]
+        watermarkPosition:
+          type: ["string", "null"]
+        showNameWatermark:
+          type: ["boolean", "null"]
+        brandColors:
+          type: ["string", "null"]
+        primaryColor:
+          type: ["string", "null"]
+        secondaryColor:
+          type: ["string", "null"]
+        accentColor:
+          type: ["string", "null"]
+        backgroundColor:
+          type: ["string", "null"]
+        fontStyle:
+          type: ["string", "null"]
+          description: Brand font personality. Legacy rows may contain historical lowercase values.
+        brandVoice:
+          type: ["string", "null"]
+        layoutGrid:
+          type: ["string", "null"]
+        visualMotif:
+          type: ["string", "null"]
+        toneOfVoice:
+          type: ["string", "null"]
+        visualFingerprint:
+          type: ["string", "null"]
+        targetAudience:
+          type: ["string", "null"]
+        competitorHandles:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BrandProfileInput:
+      type: object
+      required: [businessName, industry]
+      properties:
+        businessName:
+          type: string
+        industry:
+          type: string
+        instagramHandle:
+          type: string
+        location:
+          type: string
+        timezone:
+          type: string
+        logoUrl:
+          type: string
+        logoBase64:
+          type: string
+        watermarkPosition:
+          type: string
+        showNameWatermark:
+          type: boolean
+        brandColors:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        accentColor:
+          type: string
+        backgroundColor:
+          type: string
+        fontStyle:
+          type: string
+          enum: [LUXURY, STREETWEAR, HERITAGE, MODERN, MINIMAL, modern, bold, elegant, casual]
+          description: Brand font personality; lowercase values remain accepted for older clients.
+        brandVoice:
+          type: string
+        layoutGrid:
+          type: string
+          enum: [CENTERED, EDITORIAL, ASYMMETRIC, BOLD]
+        visualMotif:
+          type: string
+          enum: [SMOKE, GEOMETRIC, ORGANIC, CHROME, CRYSTALLINE]
+        toneOfVoice:
+          type: string
+          enum: [PREMIUM, BOLD, EDUCATIONAL, FRIENDLY, SOPHISTICATED]
+        visualFingerprint:
+          type: string
+        targetAudience:
+          type: string
+        competitorHandles:
+          type: string
+
+    BrandProfileUpdate:
+      type: object
+      properties:
+        businessName:
+          type: string
+        industry:
+          type: string
+        instagramHandle:
+          type: string
+        location:
+          type: string
+        timezone:
+          type: string
+        logoUrl:
+          type: string
+        logoBase64:
+          type: string
+        watermarkPosition:
+          type: string
+        showNameWatermark:
+          type: boolean
+        brandColors:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        accentColor:
+          type: string
+        backgroundColor:
+          type: string
+        fontStyle:
+          type: string
+          enum: [LUXURY, STREETWEAR, HERITAGE, MODERN, MINIMAL, modern, bold, elegant, casual]
+          description: Brand font personality; lowercase values remain accepted for older clients.
+        brandVoice:
+          type: string
+        layoutGrid:
+          type: string
+          enum: [CENTERED, EDITORIAL, ASYMMETRIC, BOLD]
+        visualMotif:
+          type: string
+          enum: [SMOKE, GEOMETRIC, ORGANIC, CHROME, CRYSTALLINE]
+        toneOfVoice:
+          type: string
+          enum: [PREMIUM, BOLD, EDUCATIONAL, FRIENDLY, SOPHISTICATED]
+        visualFingerprint:
+          type: string
+        targetAudience:
+          type: string
+        competitorHandles:
+          type: string
+
+    Post:
+      type: object
+      required:
+        - id
+        - userId
+        - caption
+        - platform
+        - postType
+        - status
+        - agcoCompliant
+        - createdAt
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        caption:
+          type: string
+        hashtags:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        prompt:
+          type: ["string", "null"]
+        platform:
+          type: string
+          default: instagram
+        postType:
+          type: string
+          enum: [post, story, sms, email]
+          default: post
+        status:
+          type: string
+          enum: [draft, scheduled, published, failed]
+          default: draft
+        scheduledAt:
+          type: ["string", "null"]
+          format: date-time
+        postedAt:
+          type: ["string", "null"]
+          format: date-time
+        instagramPostId:
+          type: ["string", "null"]
+        strainName:
+          type: ["string", "null"]
+        productType:
+          type: ["string", "null"]
+        thcPercentage:
+          type: ["string", "null"]
+        agcoCompliant:
+          type: boolean
+          default: true
+        imageGenerationWarning:
+          type: boolean
+          description: True when image generation used the SVG placeholder fallback.
+        imageGenerationWarningMessage:
+          type: string
+          description: Explanation shown when the placeholder fallback was used.
+        createdAt:
+          type: string
+          format: date-time
+
+    PostList:
+      type: object
+      required: [posts, total, page, limit]
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Post"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    GeneratePostInput:
+      type: object
+      required: [prompt]
+      properties:
+        prompt:
+          type: string
+        postType:
+          type: string
+          enum: [post, story, sms, email]
+          default: post
+        referenceImageBase64:
+          type: string
+          description: Optional base64-encoded reference image for image-to-image generation
+
+    SchedulePostInput:
+      type: object
+      required: [scheduledAt]
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+
+    SuggestedPrompts:
+      type: object
+      required: [industry, prompts]
+      properties:
+        industry:
+          type: string
+        prompts:
+          type: array
+          items:
+            type: string
+
+    Schedule:
+      type: object
+      required: [id, userId, frequency]
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        frequency:
+          type: string
+        preferredTimes:
+          type: ["string", "null"]
+        timezone:
+          type: ["string", "null"]
+        autoPost:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    ScheduleInput:
+      type: object
+      required: [frequency]
+      properties:
+        frequency:
+          type: string
+        preferredTimes:
+          type: string
+        timezone:
+          type: string
+        autoPost:
+          type: boolean
+
+    ScheduleUpdate:
+      type: object
+      properties:
+        frequency:
+          type: string
+        preferredTimes:
+          type: string
+        timezone:
+          type: string
+        autoPost:
+          type: boolean
+
+    AnalyticsSummary:
+      type: object
+      required:
+        - totalPosts
+        - publishedPosts
+        - scheduledPosts
+        - draftPosts
+        - estimatedReach
+        - thisWeekPosts
+      properties:
+        totalPosts:
+          type: integer
+        publishedPosts:
+          type: integer
+        scheduledPosts:
+          type: integer
+        draftPosts:
+          type: integer
+        estimatedReach:
+          type: integer
+        thisWeekPosts:
+          type: integer
+        recentPosts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Post"
+
+    CalendarEntry:
+      type: object
+      required: [id, scheduledAt, postType, status]
+      properties:
+        id:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+        postType:
+          type: string
+        status:
+          type: string
+        caption:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+
+    CalendarEntries:
+      type: object
+      required: [entries]
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/CalendarEntry"
+
+    InstagramConnectInput:
+      type: object
+      required: [accessToken, igUserId]
+      properties:
+        accessToken:
+          type: string
+        igUserId:
+          type: string
+
+    InstagramStatus:
+      type: object
+      required: [connected]
+      properties:
+        connected:
+          type: boolean
+        igUserId:
+          type: ["string", "null"]
+        instagramHandle:
+          type: ["string", "null"]

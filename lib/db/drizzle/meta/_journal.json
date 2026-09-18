@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1785068360812,
+      "tag": "0000_sleepy_wendell_rand",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786298711345,
+      "tag": "0001_drop_image_url_not_null",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787006446650,
+      "tag": "0002_pale_absorbing_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788028273068,
+      "tag": "0003_ensure_instagram_connections",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788436800000,
+      "tag": "0004_add_image_generation_jobs",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1788490817565,
+      "tag": "0005_quick_power_pack",
+      "breakpoints": true
+    }
+  ]
+}

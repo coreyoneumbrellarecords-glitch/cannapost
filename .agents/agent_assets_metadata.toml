@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "mP3-AaIKq-ZpI3ni7Yagy"
+uri = "file://exports/aura-cannapost-source.zip"
+type = "unspecified"
+title = "Aura by CannaPost source export"
+description = "Source workspace export with dependencies, build output, logs, Git metadata, caches, and environment files excluded."
+logical_id = "ee478611-f37d-41e8-9408-2c3616524101"
+content_hash = "sha256:d6a455fa905abf6a0a2bee0e400c0ae8f4cc49d37a69a964a8353229441f73d3"
+size = 53300996
+mtime_ms = 1789693041336
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:fc81e700-43c5-4301-bd4c-1bab25caf623/ee478611-f37d-41e8-9408-2c3616524101/a05591ec-783d-4018-bc5f-ac8125402643"
+storage_version_token = "1789693046891620"
+content_type = "application/octet-stream"

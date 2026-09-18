@@ -1,0 +1,71 @@
+# Master Prompt: Rebuild "Aura by CannaPost" on PostAura's Architecture
+
+Paste this whole document into your Replit AI Agent inside the PostAura project (or a fresh clone of it). Goal: keep PostAura's app shell, UI, auth, and database exactly as it works today, and replace its generic marketing-post engine with CannaPost's cannabis-specific engine. End result is one app, branded "Aura by CannaPost."
+
+## 1. Non-negotiables (do not change these)
+
+- Product name everywhere is **Aura by CannaPost**. Remove all "PostAura" branding, copy, and logo references.
+- `LAYOUT` constants in `imageGenerator.ts` (see section 3) are locked. Do not adjust pixel values, THC%/strain label positions, or the Health Canada warning box.
+- All 14 Health Canada mandatory warning strings and the random-selection logic that picks one per post must be preserved.
+- No Stripe or any payment integration.
+- AGCO compliance rewrite step must run on every generated caption before it's shown to the user.
+- Keep PostAura's Clerk auth and Drizzle/Postgres database as the system of record. Do not reintroduce Supabase.
+
+## 2. What stays from PostAura (the shell)
+
+Keep these as-is, just re-skinned with CannaPost branding and copy:
+
+- `artifacts/postaura/src/pages/DashboardPage.tsx` — main command center
+- `artifacts/postaura/src/pages/HistoryPage.tsx` — grid of generated posts, filter/search/delete
+- `artifacts/postaura/src/pages/CalendarPage.tsx` — monthly scheduled-post calendar
+- `artifacts/postaura/src/pages/SettingsPage.tsx` — brand kit form
+- `artifacts/postaura/src/pages/InstagramPage.tsx` — Meta access token + IG connection
+- `artifacts/postaura/src/pages/LandingPage.tsx` — signed-out marketing page
+- Clerk auth wiring in `App.tsx`, `requireAuth`-equivalent middleware
+- Drizzle schema files under `lib/db/src/schema/`
+- The OpenAPI-first codegen flow (`lib/api-spec/openapi.yaml` → Orval → `lib/api-client-react`)
+
+## 3. What gets ported in from CannaPost (the engine)
+
+Bring these over largely intact:
+
+- `artifacts/api-server/src/lib/imageGenerator.ts` (1,333 lines) — full Sharp compositing pipeline: background generation via Stability AI, product-type-aware layout (flower/pre-roll with strain art, vapes, edibles with radial-gradient soft-blend mask, concentrates, accessories with no THC% shown, CBD/topicals, capsules), the `LAYOUT` constant block, the Canadian cannabis leaf SVG, and the Health Canada warning box.
+- AGCO compliance rewrite logic (Claude-based caption rewrite step) — currently in the CannaPost `generate.ts` route.
+- The reference-photo-upload → background-removal (Stability AI) → composited-as-hero flow.
+- `FlyerData` interface (`strainName`, `productType`, etc.) — this becomes the shape of the cannabis-specific metadata attached to each post.
+
+## 4. Database schema changes
+
+Extend PostAura's existing Drizzle tables rather than creating new ones:
+
+**`posts` table** (`lib/db/src/schema/posts.ts`) — add:
+- `strainName` (text, nullable)
+- `productType` (text, nullable) — flower, pre-roll, vape, edible, concentrate, accessory, CBD/topical, capsule
+- `thcPercentage` (text or numeric, nullable)
+- `agcoCompliant` (boolean, default true) — set false if a caption needed the rewrite flagged for manual review
+
+**`brand_profiles` table** (`lib/db/src/schema/brandProfiles.ts`) — the `industry` column becomes redundant (always "cannabis dispensary"); either hardcode it or repurpose it for dispensary sub-category. Keep `businessName`, `instagramHandle`, `location`, `logoBase64`/`logoUrl` as-is — these map directly to CannaPost's existing brand settings fields.
+
+Run the migration with `pnpm --filter @workspace/db run push` per PostAura's existing workflow. There is no live CannaPost production data in Supabase to migrate unless Corey says otherwise — confirm this before writing a data-migration script instead of a fresh schema push.
+
+## 5. Frontend content changes
+
+- Dashboard's "4 suggested prompts by industry" → replace with cannabis-specific prompts (e.g. new strain drop, weekend sale, pre-roll bundle, edibles restock, concentrate feature).
+- Settings page → drop or hide the generic "industry" selector; add strain/product-type context where relevant.
+- Landing page copy → cannabis dispensary framing, 19+ Ontario notice, AGCO/Health Canada compliance messaging up front.
+- Bring in CannaPost's existing photography as reference/marketing assets: `hero_bong.jpg`, `hero_edible.jpg`, `hero_flower.jpg`, `hero_vape.jpg`, `final_blue_dream.jpg`, `final_granddaddy.jpg`, `final_og_kush.jpg`, `blue_dream_v2.jpg`, `purple_punch_v3.jpg`, `abstract_citrus.jpg`, `abstract_kush.jpg`, `abstract_purple.jpg`, `pp_hero.jpg`.
+
+## 6. Execution order
+
+1. Rename the workspace package (`postaura` → something like `aura-cannapost`) and swap branding assets (logo, favicon, colors, name strings).
+2. Extend the Drizzle schema per section 4 and push the migration.
+3. Port `imageGenerator.ts` unchanged, wire it into PostAura's existing generate route in place of the current generic image logic.
+4. Port the AGCO compliance rewrite step into the caption-generation flow.
+5. Update the generate route's request/response types (and regenerate via Orval) to include `strainName`, `productType`, `thcPercentage`.
+6. Update Dashboard/History/Calendar/Settings copy and forms per section 5.
+7. Swap in CannaPost's photography assets.
+8. Full pass: signup via Clerk → brand settings → generate a cannabis post → confirm AGCO rewrite fires → check History → check Calendar → connect Instagram.
+
+## 7. One thing to flag back to Corey before automating fully
+
+PostAura's Instagram integration uses the Meta Graph API to auto-publish posts directly. Instagram/Meta's platform policies restrict promotion of cannabis products, and an account auto-posting THC%/strain-pricing content could get flagged or restricted by Meta regardless of AGCO compliance on the content itself. Worth deciding whether direct auto-publish stays enabled for dispensary accounts, or whether Aura by CannaPost should generate the post and caption but leave publishing manual.

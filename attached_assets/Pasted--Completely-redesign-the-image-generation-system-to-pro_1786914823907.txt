@@ -1,0 +1,64 @@
+"Completely redesign the image generation system to produce a new style of promotional graphics. Do not change the AGCO compliance system, caption generation, Claude API integration, or any other existing functionality. Only replace how the promotional images are generated and styled.
+
+THE NEW IMAGE STYLE
+Every generated image must look like a high end luxury graphic design piece created by a professional cannabis brand designer. The style is bold illustrated 3D art with the strain or product name as the centerpiece of the composition. Think luxury product packaging meets fantasy art meets high fashion editorial. No photorealistic cannabis buds or plant imagery at all. The product is communicated through thematic artistic elements specific to the strain name and flavor profile.
+
+CORE DESIGN RULES
+The strain or product name must be rendered as large dimensional 3D typography that is part of the artwork itself, not just text overlaid on top. The letters should have texture, depth, and material quality such as glossy candy, molten gold, chrome metal, crystallized sugar, liquid silk, or holographic foil depending on the strain theme. The typography IS the hero of the image.
+
+Every image must have a rich immersive background that tells the story of the strain through color, texture, and thematic elements. The background is never generic. It is always custom to that specific strain name and flavor profile.
+
+Real world objects that match the strain name or flavor should appear as artistic illustrated elements floating throughout the composition. For example Blueberry strains get real photorealistic blueberries integrated into the flowing abstract art. Pink Goo gets candy swirls, lollipops, and glossy dripping pink textures. Gelato gets ice cream swirls and Italian dessert elements. Sour Diesel gets electric acid yellow liquid and industrial chrome pipes. Wedding Cake gets elegant fondant textures and rose gold ribbon. The thematic objects should feel like they exist in the same artistic world as the typography.
+
+Abstract flowing elements such as silk ribbons, liquid chrome streams, smoke wisps, holographic ribbons, aurora waves, or crystal formations should swirl and flow throughout the composition connecting all elements together.
+
+STRAIN THEME LIBRARY
+Build a strain theme engine that maps strain names and flavor profiles to specific visual themes. Use this as the foundation and expand it to cover every cannabis strain and product type:
+
+CANDY AND DESSERT STRAINS such as Pink Goo, Gelato, Wedding Cake, Zkittlez, Candy Kush: Glossy 3D bubble typography dripping with candy glaze, pastel and jewel tone color palettes, real candy and dessert elements floating throughout, gold glitter particles, cream and silk ribbon flows, luxury confectionery aesthetic
+
+FRUIT STRAINS such as Blueberry, Strawberry Cough, Mango Haze, Pineapple Express, Lemon Haze: Hyper realistic fruit elements integrated into flowing abstract silk and chrome art, jewel toned color palettes matching the fruit, liquid splash effects, prismatic light refractions, fresh luxury fruit brand aesthetic
+
+GAS AND FUEL STRAINS such as Sour Diesel, Pink Gas, Gas Mask, Jet Fuel: Industrial chrome and steel pipe elements, electric neon color explosions, acid yellow and deep purple tones, liquid metal drips, high voltage energy aesthetic, lightning and electric arc effects
+
+PURPLE AND INDICA STRAINS such as Granddaddy Purple, Purple Punch, Purple Kush, Grape Ape: Deep violet and amethyst crystal formations, aurora borealis wave effects, flowing silk ribbons in purple and midnight blue, gold and silver metallic accents, luxury nocturnal aesthetic
+
+EARTHY AND OG STRAINS such as OG Kush, Afghan Kush, Northern Lights: Deep amber and terracotta tones, ancient stone and earth textures, warm gold and rust metallic elements, rugged luxury aesthetic
+
+TROPICAL AND EXOTIC STRAINS such as Hawaiian, Maui Wowie, Tropicana: Vibrant tropical color explosions, chrome and holographic tropical fruit elements, sunset gradient backgrounds, island luxury aesthetic
+
+MINT AND COOL STRAINS such as Thin Mint, Ice, Arctic: Crystalline ice and frost formations, cool aqua and silver tones, holographic glass and crystal elements, arctic luxury aesthetic
+
+CONCENTRATE AND EXTRACT PRODUCTS such as shatter, wax, live resin, hash rosin: Amber and gold translucent liquid elements, luxury amber jewel tones, flowing golden resin drips, sophisticated extract aesthetic
+
+VAPE AND CARTRIDGE PRODUCTS: Sleek chrome and holographic tech elements, futuristic minimal aesthetic, electric neon accent colors, premium technology brand feel
+
+EDIBLE PRODUCTS: Playful candy and confectionery art matching the edible flavor, bold appetizing color palettes, luxury food photography meets graphic art
+
+CBD AND WELLNESS PRODUCTS: Clean white and gold minimal luxury aesthetic, botanical illustrated elements, sophisticated wellness brand feel
+
+ACCESSORY PRODUCTS: Studio product photography aesthetic, clean dark background, dramatic spotlight lighting, premium retail brand feel
+
+TEXT AND LAYOUT STRUCTURE
+Keep the existing text layout structure exactly as it is with store name at top, strain type label, strain name, THC percentage, sizes, and 19+ disclaimer at bottom. The difference is the strain name typography must now be rendered as part of the artwork itself in the 3D dimensional style described above rather than as a flat text overlay.
+
+The store name at the top remains clean white spaced uppercase text on a dark area. The THC percentage, sizes, and disclaimer remain as clean readable text in the lower portion of the image on a dark gradient area.
+
+IMAGE COMPOSITION
+Upper two thirds of the image: The full artistic composition including the 3D strain name typography integrated into the thematic illustrated art with flowing abstract elements, thematic objects, and rich background
+
+Lower third of the image: Dark gradient fade to near black providing a clean readable area for THC percentage, available sizes, and the 19+ disclaimer
+
+Store name at the very top on a clean dark bar with thin separator line
+
+WHAT TO NEVER INCLUDE
+No photorealistic cannabis buds, flowers, or plant imagery
+No generic smoke or fog effects as the primary visual
+No stock photo style backgrounds
+No text that looks like it was simply typed over an image
+No generic abstract art that could apply to any strain
+
+IMPLEMENTATION
+When a user submits a prompt extract the strain name or product type, identify its flavor profile and thematic category from the strain theme library, generate a detailed artistic image prompt that instructs the image generation API to create this illustrated graphic design style with the specific thematic elements for that strain, pass the brand kit primary color and brand voice to further customize the color palette and overall mood of the artwork per brand.
+
+Every image must look like it was created specifically for that strain by a professional cannabis graphic designer. No two strains should ever produce images that look similar."
